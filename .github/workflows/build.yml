@@ -1,0 +1,30 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+      - '*'
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build the solution using MSBuild
+        run: msbuild LiveSplit.Painscreek.sln /p:Configuration=Release
+
+      - name: Prepare upload
+        run: |
+          mkdir publish
+          copy LiveSplit.Painscreek.AutoSplitter\bin\Release\LiveSplit.Painscreek.AutoSplitter.dll publish\
+          copy LiveSplit.Painscreek.AutoSplitter\bin\Release\LiveSplit.Painscreek.MemoryReader.dll publish\
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: libraries
+          path: publish/

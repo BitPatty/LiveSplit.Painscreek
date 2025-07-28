@@ -3,6 +3,7 @@
 *.sln text eol=crlf
 *.md text eol=crlf
 *.resx text eol=crlf
+*.yml text eol=crlf
 
 .gitattributes text eol=crlf
 .gitignore text eol=crlf
