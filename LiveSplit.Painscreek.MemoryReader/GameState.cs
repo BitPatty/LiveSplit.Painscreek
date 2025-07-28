@@ -1,5 +1,4 @@
-﻿
-// <Elements>
+﻿// <Elements>
 //   <Element Offset="16" Vartype="4 Bytes" Bytesize="4" OffsetHex="00000010" Description="m_InstanceID" DisplayMethod="unsigned integer"/>
 //   <Element Offset="24" Vartype="Pointer" Bytesize="8" OffsetHex="00000018" Description="m_CachedPtr" DisplayMethod="unsigned integer"/>
 //   <Element Offset="32" Vartype="Pointer" Bytesize="8" OffsetHex="00000020" Description="player" DisplayMethod="unsigned integer"/>

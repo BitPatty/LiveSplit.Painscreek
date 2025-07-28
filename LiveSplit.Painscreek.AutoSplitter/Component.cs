@@ -39,7 +39,6 @@ namespace LiveSplit.Painscreek.AutoSplitter
 
     public override void Update(IInvalidator invalidator, LiveSplitState state, float width, float height, LayoutMode mode)
     {
-      if (!ComponentSettings.EnableLoadRemoval) return;
 
       GameState? gameState = GameReader.RefreshGameState();
       if (!gameState.HasValue) return;
@@ -48,6 +47,7 @@ namespace LiveSplit.Painscreek.AutoSplitter
       {
         // Start the timer in the prologue
         case TimerPhase.NotRunning:
+          if (!ComponentSettings.EnableTimerStart) break;
           if (gameState.Value.IsTutorialOn) TimerControl.Start();
           break;
         // Toggle pause and running on loading screens
@@ -55,10 +55,12 @@ namespace LiveSplit.Painscreek.AutoSplitter
         case TimerPhase.Paused:
           if (gameState.Value.IsEndingScene)
           {
+            if (!ComponentSettings.EnableFinalSplit) break;
             TimerControl.Split();
             break;
           }
 
+          if (!ComponentSettings.EnableLoadRemoval) break;
           bool shouldTimerBePaused = ShouldPauseTimer(gameState.Value);
           if (TimerControl.CurrentState.IsGameTimePaused == shouldTimerBePaused) break;
           TimerControl.CurrentState.IsGameTimePaused = shouldTimerBePaused;
