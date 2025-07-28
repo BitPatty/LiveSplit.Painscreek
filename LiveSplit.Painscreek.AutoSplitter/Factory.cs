@@ -10,7 +10,7 @@ namespace LiveSplit.Painscreek.AutoSplitter
 {
   public class Factory : IComponentFactory
   {
-    public string ComponentName => "Painscreek Load Remover";
+    public string ComponentName => "Painscreek Autosplitter";
     public string Description => "Load remover for 'The Painscreek Killings'";
     public Version Version => Assembly.GetExecutingAssembly().GetName().Version;
     public ComponentCategory Category => ComponentCategory.Control;
