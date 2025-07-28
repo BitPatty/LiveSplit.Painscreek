@@ -1,13 +1,20 @@
 <updates>
+	<update version="0.5.0">
+		<files>
+			<file path="Components/LiveSplit.Painscreek.AutoSplitter.dll" status="changed"/>
+			<file path="Components/LiveSplit.Painscreek.MemoryReader.dll" status="changed"/>
+		</files>
+		<changelog>
+			<change>Version 0.5.0 - LiveSplit Release</change>
+		</changelog>
+	</update>
 	<update version="0.4.1">
 		<files>
 			<file path="Components/LiveSplit.Painscreek.AutoSplitter.dll" status="changed"/>
 			<file path="Components/LiveSplit.Painscreek.MemoryReader.dll" status="changed"/>
 		</files>
 		<changelog>
-			<change>
-				Version 0.4.1 - Pre-release
-			</change>
+			<change>Version 0.4.1 - Pre-release</change>
 		</changelog>
 	</update>
 </updates>
