@@ -18,7 +18,7 @@ namespace LiveSplit.Painscreek.AutoSplitter
     public IComponent Create(LiveSplitState state) => new Component(state);
 
     public string UpdateName => ComponentName;
-    public string XMLURL => "update.xml";
+    public string XMLURL => "https://raw.githubusercontent.com/BitPatty/LiveSplit.Painscreek/master/update.xml";
     public string UpdateURL => "https://raw.githubusercontent.com/BitPatty/LiveSplit.Painscreek/master/";
   }
 }
