@@ -1,0 +1,37 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Build the solution using MSBuild
+        run: msbuild LiveSplit.Painscreek.sln /p:Configuration=Release
+
+      - name: Prepare release assets
+        run: |
+          mkdir publish
+          copy LiveSplit.Painscreek.AutoSplitter\bin\Release\LiveSplit.Painscreek.AutoSplitter.dll publish\
+          copy LiveSplit.Painscreek.AutoSplitter\bin\Release\LiveSplit.Painscreek.MemoryReader.dll publish\
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          files: publish/*.dll
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
