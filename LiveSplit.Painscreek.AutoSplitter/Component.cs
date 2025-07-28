@@ -86,6 +86,9 @@ namespace LiveSplit.Painscreek.AutoSplitter
       return false;
     }
 
+    /// <summary>
+    /// Disposes the component
+    /// </summary>
     public override void Dispose()
     {
       GameReader.Dispose();

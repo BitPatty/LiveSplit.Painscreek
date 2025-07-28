@@ -1,9 +1,7 @@
 ﻿using LiveSplit.ComponentUtil;
-using LiveSplit.Web;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Security.Cryptography;
+using System.Threading;
 
 namespace LiveSplit.Painscreek.MemoryReader
 {
@@ -77,31 +75,69 @@ namespace LiveSplit.Painscreek.MemoryReader
     // LockTrigger:Update+39d - 41 FF D3               - call r11
     private readonly string LockTriggerUpdateSignature = "41 FF D3 48 83 C4 20 48 8B 04 25 ?? ?? ?? ?? 0F B6 80 D0 00 00 00 85 C0 0F 84 AC 00 00 00 48 8B 04 25 ?? ?? ?? ?? 48 8B 40 30 48 8B 40 70 0F B6 40 24 85 C0";
 
+    // 1C5DF2CF - 00 55 48                         - add [rbp+48],dl
+    // Tutorial:Awake+2- 8B EC                    - mov ebp,esp
+    // Tutorial:Awake+4- 56                       - push rsi
+    // Tutorial:Awake+5- 48 83 EC 08              - sub rsp,08 { 8 }
+    // Tutorial:Awake+9- 48 8B F1                 - mov rsi,rcx
+    // Tutorial:Awake+c- 48 83 EC 20              - sub rsp,20 { 32 }
+    // Tutorial:Awake+10- 49 BB E082B00600000000  - mov r11,Rewired.ReInput:get_players { (-326416299) }
+    // Tutorial:Awake+1a- 41 FF D3                - call r11
+    // Tutorial:Awake+1d- 48 83 C4 20             - add rsp,20 { 32 }
+    // Tutorial:Awake+21- 48 63 96 C8000000       - movsxd  rdx,dword ptr [rsi+000000C8]
+    // Tutorial:Awake+28- 48 8B C8                - mov rcx,rax
+    // Tutorial:Awake+2b- 48 83 EC 20             - sub rsp,20 { 32 }
+    // Tutorial:Awake+2f- 83 38 00                - cmp dword ptr [rax],00 { 0 }
+    // Tutorial:Awake+32- 49 BB 40F8B10600000000  - mov r11,Rewired.ReInput+PlayerHelper:GetPlayer { (-326416299) }
+    // Tutorial:Awake+3c- 41 FF D3                - call r11
+    // Tutorial:Awake+3f- 48 83 C4 20             - add rsp,20 { 32 }
+    // Tutorial:Awake+43- 48 89 46 28             - mov [rsi+28],rax
+    // Tutorial:Awake+47- B8 E0BC4306             - mov eax,0643BCE0 { (14D12D00) }
+    // Tutorial:Awake+4c- 48 89 30                - mov [rax],rsi
+    // Tutorial:Awake+4f- 48 8B 75 F8             - mov rsi,[rbp-08]
+    // Tutorial:Awake+53- C9                      - leave 
+    // Tutorial:Awake+54- C3                      - ret 
+    private readonly string TutorialAwakeSignature = "55 48 8B EC 56 48 83 EC 08 48 8B F1 48 83 EC 20 49 BB ?? ?? ?? ?? ?? ?? ?? ?? 41 FF D3 48 83 C4 20 48 63 96 C8 00 00 00 48 8B C8 48 83 EC 20 83 38 00 49 BB ?? ?? ?? ?? ?? ?? ?? ?? 41 FF D3 48 83 C4 20 48 89 46 28 B8 ?? ?? ?? ?? 48 89 30 48 8B 75 F8 C9 C3";
+
+    /// <summary>
+    /// Mutex for process lookups to avoid concurrent signature scans
+    /// </summary>
+    private readonly Mutex RefreshMutex = new Mutex();
+
     /// <summary>
     /// Refreshes the game's data
     /// </summary>
     public GameState? RefreshGameState()
     {
-      Process process = ProcessHook.TryLoadPainscreekProcess();
+      if (!RefreshMutex.WaitOne(10)) return ParseGameStateFromDataCache();
 
-      // Clear the data if the process is lost
-      if (process == null)
+      try
       {
-        Debug.WriteLine("Game process not found");
-        Reset();
-        return null;
-      }
+        Process process = ProcessHook.TryLoadPainscreekProcess();
 
-      // Clear the data if the process has changed
-      if (process.Id != LastUsedProcessID)
+        // Clear the data if the process is lost
+        if (process == null)
+        {
+          Debug.WriteLine("Game process not found");
+          Reset();
+          return null;
+        }
+
+        // Clear the data if the process has changed
+        if (process.Id != LastUsedProcessID)
+        {
+          Debug.WriteLine($"Game process ID changed from {LastUsedProcessID} to {process.Id}");
+          Reset();
+        }
+
+        LastUsedProcessID = process.Id;
+        UpdateDataCachesFromMemory(process);
+        return ParseGameStateFromDataCache();
+      }
+      finally
       {
-        Debug.WriteLine($"Game process ID changed from {LastUsedProcessID} to {process.Id}");
-        Reset();
+        RefreshMutex.ReleaseMutex();
       }
-
-      LastUsedProcessID = process.Id;
-      UpdateDataCachesFromMemory(process);
-      return ParseGameStateFromDataCache();
     }
 
     /// <summary>
@@ -139,7 +175,7 @@ namespace LiveSplit.Painscreek.MemoryReader
 
 #if DEBUG
       //LogStructToDebug(state);
-      Debug.WriteLine(Cache.CurrentTutorialInstance.ToString("x"));
+      //Debug.WriteLine(Cache.CurrentTutorialInstance.ToString("x"));
       //Debug.WriteLine(state.DoNotUse_LoadingActive);
 #endif
 
@@ -224,40 +260,19 @@ namespace LiveSplit.Painscreek.MemoryReader
     {
       if (Cache.CurrentTutorialInstance != IntPtr.Zero) return Cache.CurrentTutorialInstance;
 
-      byte[] instancePointerBytes = TryFindFirstSignatureMatch(process, LockTriggerUpdateSignature, 0xB, 4);
+      byte[] instancePointerBytes = TryFindFirstSignatureMatch(process, LockTriggerUpdateSignature, 0xB, 4) ?? TryFindFirstSignatureMatch(process, TutorialAwakeSignature, 0x48, 4);
       if (instancePointerBytes == null)
       {
-        Debug.WriteLine("Could not find signature match for Tutorial:Update");
+        Debug.WriteLine("Could not find signature match for LockTrigger:Update");
         Cache.CurrentTutorialInstance = IntPtr.Zero;
         return null;
       }
-
 
       IntPtr instancePointer = IntPtr.Zero + BinaryUtils.ByteArrayToInt32LE(instancePointerBytes);
       Debug.WriteLine($"Found tutorial instance pointer at {instancePointer.ToString("x")}");
       Cache.CurrentTutorialInstance = instancePointer;
       return instancePointer;
     }
-
-    ///// <summary>
-    ///// Attempts to load the data of a fadeout texture instance
-    ///// </summary>
-    ///// <param name="process">The process</param>
-    ///// <param name="playerControlInstanceData">The data of the player control instance</param>
-    ///// <returns>The fadeout texture data or NULL if it could not be read</returns>
-    //private byte[] TryLoadFadeoutTextureData(Process process, byte[] playerControlInstanceData)
-    //{
-    //  byte[] texturePointerBytes = new byte[4] {
-    //    playerControlInstanceData[0xB0],
-    //    playerControlInstanceData[0xB1],
-    //    playerControlInstanceData[0xB2],
-    //    playerControlInstanceData[0xB3]
-    //  };
-
-    //  IntPtr texturePointer = IntPtr.Zero + BinaryUtils.ByteArrayToInt32LE(texturePointerBytes);
-    //  // TODO
-    //  return TryReadProcessBytes(process, texturePointer, 0x140);
-    //}
 
     /// <summary>
     /// Tries to load the data of a player control instance

@@ -38,32 +38,26 @@ namespace LiveSplit.Painscreek.MemoryReader
       }
     }
 
+    /// <summary>
+    /// Attempts to find the process with the specified name
+    /// </summary>
+    /// <param name="processName">The process name</param>
+    /// <returns>The matching process or NULL if it wasn't found</returns>
     private Process TryFindProcess(string processName)
     {
       foreach (Process process in Process.GetProcessesByName(processName))
       {
         if (IgnoredProcessIDs.Contains(process.Id)) continue;
         if (!process.ProcessName.Equals(processName, StringComparison.OrdinalIgnoreCase)) continue;
-
-        //ProcessModuleWow64Safe module = process.MainModuleWow64Safe();
-        //long baseAddress = module.BaseAddress.ToInt64();
-        //long entryPointAddress = module.EntryPointAddress.ToInt64();
-        //long relativeEntryPointAddress = entryPointAddress - baseAddress;
-
-        //// TODO
-        ////if (relativeEntryPointAddress != 0x5493C7)
-        ////{
-        ////    IgnoredProcessIDs.Add(process.Id);
-        ////    continue;
-        ////}
-
-        Debug.WriteLine($"Hooking up process {process.Id}");
         return process;
       }
 
       return null;
     }
 
+    /// <summary>
+    /// Disposes the instance
+    /// </summary>
     public void Dispose()
     {
       CachedProcess?.Dispose();

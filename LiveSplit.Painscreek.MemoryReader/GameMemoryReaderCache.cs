@@ -20,11 +20,13 @@ namespace LiveSplit.Painscreek.MemoryReader
     public byte[] CurrentPlayerControlInstanceData = null;
 
     /// <summary>
-    /// The data of the current fadeout texture
+    /// The data of the current tutorial instance
     /// </summary>
     public byte[] CurrentTutorialInstanceData = null;
 
-
+    /// <summary>
+    /// The flashlight configuration
+    /// </summary>
     public byte? FlashlightData = null;
 
     /// <summary>
