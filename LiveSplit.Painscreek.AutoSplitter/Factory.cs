@@ -14,9 +14,7 @@ namespace LiveSplit.Painscreek.AutoSplitter
     public string Description => "Load remover for 'The Painscreek Killings'";
     public Version Version => Assembly.GetExecutingAssembly().GetName().Version;
     public ComponentCategory Category => ComponentCategory.Control;
-
     public IComponent Create(LiveSplitState state) => new Component(state);
-
     public string UpdateName => ComponentName;
     public string XMLURL => "https://raw.githubusercontent.com/BitPatty/LiveSplit.Painscreek/master/update.xml";
     public string UpdateURL => "https://raw.githubusercontent.com/BitPatty/LiveSplit.Painscreek/master/";
