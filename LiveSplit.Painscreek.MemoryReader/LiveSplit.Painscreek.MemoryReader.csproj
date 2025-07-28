@@ -49,10 +49,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameMemory.cs" />
+    <Compile Include="BinaryUtils.cs" />
+    <Compile Include="GameMemoryReader.cs" />
     <Compile Include="GameState.cs" />
-    <Compile Include="MemoryReader.cs" />
-    <Compile Include="ProcessHook.cs" />
+    <Compile Include="GameMemoryReaderCache.cs" />
+    <Compile Include="GameProcessHook.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

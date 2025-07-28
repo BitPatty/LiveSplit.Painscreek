@@ -10,7 +10,8 @@ namespace LiveSplit.Painscreek.AutoSplitter
   {
     public override string ComponentName => "Painscreek Autosplitter";
     public UserSettings ComponentSettings;
-    private readonly MemoryReader.MemoryReader GameMemory = new MemoryReader.MemoryReader();
+
+    private readonly GameMemoryReader GameReader = new GameMemoryReader();
     private readonly TimerModel TimerControl;
 
     public Component(LiveSplitState state)
@@ -40,19 +41,54 @@ namespace LiveSplit.Painscreek.AutoSplitter
     {
       if (!ComponentSettings.EnableLoadRemoval) return;
 
-      GameMemory.UpdateGameState();
-      GameState? gameState = GameMemory.CurrentGameState;
-      if (gameState == null || !gameState.HasValue) return;
+      GameState? gameState = GameReader.RefreshGameState();
+      if (!gameState.HasValue) return;
 
-      if (!TimerControl.CurrentState.IsGameTimePaused && gameState.Value.LevelLoading)
-        TimerControl.CurrentState.IsGameTimePaused = true;
-      else if (TimerControl.CurrentState.IsGameTimePaused && !gameState.Value.LevelLoading)
-        TimerControl.CurrentState.IsGameTimePaused = false;
+      switch (TimerControl.CurrentState.CurrentPhase)
+      {
+        // Start the timer in the prologue
+        case TimerPhase.NotRunning:
+          if (gameState.Value.IsTutorialOn) TimerControl.Start();
+          break;
+        // Toggle pause and running on loading screens
+        case TimerPhase.Running:
+        case TimerPhase.Paused:
+          if (gameState.Value.IsEndingScene)
+          {
+            TimerControl.Split();
+            break;
+          }
+
+          bool shouldTimerBePaused = ShouldPauseTimer(gameState.Value);
+          if (TimerControl.CurrentState.IsGameTimePaused == shouldTimerBePaused) break;
+          TimerControl.CurrentState.IsGameTimePaused = shouldTimerBePaused;
+          break;
+        // Don't do anything once the run is done
+        case TimerPhase.Ended:
+          break;
+      }
+    }
+
+    /// <summary>
+    /// Determines whether the game timer should be paused based on the game's state
+    /// </summary>
+    /// <param name="gameState">The game state</param>
+    /// <returns>True if it should be paused</returns>
+    private bool ShouldPauseTimer(GameState gameState)
+    {
+      // Note: Flashlight is disabled in start menu
+      if (gameState.IsStartMenu) return false;
+
+      // The flashlight is enabled before fade-in on playable scenes
+      // It is always disabled on loading screens
+      if (gameState.IsFlashlightComponentDisabled && gameState.IsInSceneTransition) return true;
+
+      return false;
     }
 
     public override void Dispose()
     {
-      GameMemory.Dispose();
+      GameReader.Dispose();
     }
 
   }

@@ -5,38 +5,36 @@ using System.Diagnostics;
 
 namespace LiveSplit.Painscreek.MemoryReader
 {
-  public class ProcessHook : IDisposable
+  public class GameProcessHook : IDisposable
   {
-    private Process GameProcess;
+    private Process CachedProcess;
     private readonly List<int> IgnoredProcessIDs = new List<int> { };
 
-    public Process LoadGameProcess()
+    /// <summary>
+    /// Attempts to load the game process
+    /// </summary>
+    /// <returns>The game process or NULL if it could not be found</returns>
+    public Process TryLoadPainscreekProcess()
     {
-      TryLoadProcess();
-      return GameProcess;
-    }
+      if (CachedProcess != null && !CachedProcess.HasExited) return CachedProcess;
 
-    private bool TryLoadProcess()
-    {
-      if (GameProcess != null && !GameProcess.HasExited) return true;
-
-      GameProcess?.Dispose();
-      GameProcess = null;
+      CachedProcess?.Dispose();
+      CachedProcess = null;
 
       try
       {
-        Process targetProcess = TryFindProcess("Painscreek");
-        if (targetProcess == null) return false;
-        Debug.WriteLine("Found process");
-        GameProcess = targetProcess;
-        return true;
+        Process process = TryFindProcess("Painscreek");
+        if (process == null) return null;
+        Debug.WriteLine($"Found matching process with PID {process.Id}");
+        CachedProcess = process;
+        return null;
 
       }
       catch (Win32Exception ex)
       {
-        GameProcess?.Dispose();
-        GameProcess = null;
-        return false;
+        CachedProcess?.Dispose();
+        CachedProcess = null;
+        return null;
       }
     }
 
@@ -68,9 +66,8 @@ namespace LiveSplit.Painscreek.MemoryReader
 
     public void Dispose()
     {
-      GameProcess?.Dispose();
-      GameProcess = null;
+      CachedProcess?.Dispose();
+      CachedProcess = null;
     }
-
   }
 }

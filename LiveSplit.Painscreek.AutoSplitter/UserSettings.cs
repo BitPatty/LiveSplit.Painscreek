@@ -7,7 +7,8 @@ namespace LiveSplit.Painscreek.AutoSplitter
   public partial class UserSettings : UserControl
   {
     public bool EnableLoadRemoval { get; set; }
-
+    public bool EnableTimerStart { get; set; }
+    public bool EnableFinalSplit { get; set; }
 
     public UserSettings()
     {
@@ -15,6 +16,8 @@ namespace LiveSplit.Painscreek.AutoSplitter
 
       // Data bindings
       Checkbox_EnableLoadRemoval.DataBindings.Add("Checked", this, "EnableLoadRemoval", false, DataSourceUpdateMode.OnPropertyChanged);
+      Checkbox_EnableTimerStart.DataBindings.Add("Checked", this, "EnableTimerStart", false, DataSourceUpdateMode.OnPropertyChanged);
+      Checkbox_EnableFinalSplit.DataBindings.Add("Checked", this, "EnableFinalSplit", false, DataSourceUpdateMode.OnPropertyChanged);
     }
 
     /// <summary>
@@ -27,6 +30,8 @@ namespace LiveSplit.Painscreek.AutoSplitter
       XmlElement parent = document.CreateElement("Settings");
       parent.AppendChild(ToXMLElement(document, "SchemaVersion", 1));
       parent.AppendChild(ToXMLElement(document, nameof(EnableLoadRemoval), EnableLoadRemoval));
+      parent.AppendChild(ToXMLElement(document, nameof(EnableTimerStart), EnableTimerStart));
+      parent.AppendChild(ToXMLElement(document, nameof(EnableFinalSplit), EnableFinalSplit));
       return parent;
     }
 
@@ -37,6 +42,8 @@ namespace LiveSplit.Painscreek.AutoSplitter
     public void LoadXMLConfigurationNode(XmlNode settings)
     {
       EnableLoadRemoval = ParseXMLBooleanValue(settings, nameof(EnableLoadRemoval), true);
+      EnableTimerStart = ParseXMLBooleanValue(settings, nameof(EnableTimerStart), true);
+      EnableFinalSplit = ParseXMLBooleanValue(settings, nameof(EnableFinalSplit), true);
     }
 
     /// <summary>

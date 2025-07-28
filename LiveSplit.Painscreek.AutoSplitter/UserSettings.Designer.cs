@@ -32,6 +32,8 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.Checkbox_EnableLoadRemoval = new System.Windows.Forms.CheckBox();
             this.lblDisclaimer = new System.Windows.Forms.Label();
+            this.Checkbox_EnableTimerStart = new System.Windows.Forms.CheckBox();
+            this.Checkbox_EnableFinalSplit = new System.Windows.Forms.CheckBox();
             this.settingsPanel.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -59,19 +61,23 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 21F));
             this.tableLayoutPanel1.Controls.Add(this.Checkbox_EnableLoadRemoval, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.Checkbox_EnableTimerStart, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.Checkbox_EnableFinalSplit, 0, 2);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 103);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(451, 57);
+            this.tableLayoutPanel1.RowCount = 4;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(451, 74);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // Checkbox_EnableLoadRemoval
             // 
             this.Checkbox_EnableLoadRemoval.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.Checkbox_EnableLoadRemoval.AutoSize = true;
-            this.Checkbox_EnableLoadRemoval.Location = new System.Drawing.Point(3, 5);
+            this.Checkbox_EnableLoadRemoval.Location = new System.Drawing.Point(3, 3);
             this.Checkbox_EnableLoadRemoval.Name = "Checkbox_EnableLoadRemoval";
             this.Checkbox_EnableLoadRemoval.Size = new System.Drawing.Size(131, 17);
             this.Checkbox_EnableLoadRemoval.TabIndex = 1;
@@ -91,6 +97,28 @@
             this.lblDisclaimer.TabIndex = 1;
             this.lblDisclaimer.Text = "Attention: This component is still under development!";
             this.lblDisclaimer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // Checkbox_EnableTimerStart
+            // 
+            this.Checkbox_EnableTimerStart.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.Checkbox_EnableTimerStart.AutoSize = true;
+            this.Checkbox_EnableTimerStart.Location = new System.Drawing.Point(3, 27);
+            this.Checkbox_EnableTimerStart.Name = "Checkbox_EnableTimerStart";
+            this.Checkbox_EnableTimerStart.Size = new System.Drawing.Size(113, 17);
+            this.Checkbox_EnableTimerStart.TabIndex = 2;
+            this.Checkbox_EnableTimerStart.Text = "Enable Timer Start";
+            this.Checkbox_EnableTimerStart.UseVisualStyleBackColor = true;
+            // 
+            // Checkbox_EnableFinalSplit
+            // 
+            this.Checkbox_EnableFinalSplit.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.Checkbox_EnableFinalSplit.AutoSize = true;
+            this.Checkbox_EnableFinalSplit.Location = new System.Drawing.Point(3, 51);
+            this.Checkbox_EnableFinalSplit.Name = "Checkbox_EnableFinalSplit";
+            this.Checkbox_EnableFinalSplit.Size = new System.Drawing.Size(107, 17);
+            this.Checkbox_EnableFinalSplit.TabIndex = 3;
+            this.Checkbox_EnableFinalSplit.Text = "Enable Final Split";
+            this.Checkbox_EnableFinalSplit.UseVisualStyleBackColor = true;
             // 
             // UserSettings
             // 
@@ -113,5 +141,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.CheckBox Checkbox_EnableLoadRemoval;
         private System.Windows.Forms.Label lblDisclaimer;
-    }
+    private System.Windows.Forms.CheckBox Checkbox_EnableTimerStart;
+    private System.Windows.Forms.CheckBox Checkbox_EnableFinalSplit;
+  }
 }
