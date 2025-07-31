@@ -6,9 +6,9 @@ namespace LiveSplit.Painscreek.AutoSplitter
 {
   public partial class UserSettings : UserControl
   {
-    public bool EnableLoadRemoval { get; set; }
-    public bool EnableTimerStart { get; set; }
-    public bool EnableFinalSplit { get; set; }
+    public bool EnableLoadRemoval { get; set; } = true;
+    public bool EnableTimerStart { get; set; } = false;
+    public bool EnableFinalSplit { get; set; } = false;
 
     public UserSettings()
     {
@@ -42,8 +42,8 @@ namespace LiveSplit.Painscreek.AutoSplitter
     public void LoadXMLConfigurationNode(XmlNode settings)
     {
       EnableLoadRemoval = ParseXMLBooleanValue(settings, nameof(EnableLoadRemoval), true);
-      EnableTimerStart = ParseXMLBooleanValue(settings, nameof(EnableTimerStart), true);
-      EnableFinalSplit = ParseXMLBooleanValue(settings, nameof(EnableFinalSplit), true);
+      EnableTimerStart = ParseXMLBooleanValue(settings, nameof(EnableTimerStart), false);
+      EnableFinalSplit = ParseXMLBooleanValue(settings, nameof(EnableFinalSplit), false);
     }
 
     /// <summary>
