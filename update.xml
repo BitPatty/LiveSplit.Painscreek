@@ -1,4 +1,13 @@
 <updates>
+	<update version="0.5.3">
+		<files>
+			<file path="Components/LiveSplit.Painscreek.AutoSplitter.dll" status="changed"/>
+			<file path="Components/LiveSplit.Painscreek.MemoryReader.dll" status="changed"/>
+		</files>
+		<changelog>
+			<change>Version 0.5.3 - Fixed version number</change>
+		</changelog>
+	</update>
 	<update version="0.5.2">
 		<files>
 			<file path="Components/LiveSplit.Painscreek.AutoSplitter.dll" status="changed"/>
@@ -8,7 +17,7 @@
 			<change>Version 0.5.2 - Fixed an issue where a fresh installation would not apply default settings</change>
 		</changelog>
 	</update>
-	<update version="0.5.2">
+	<update version="0.5.1">
 		<files>
 			<file path="Components/LiveSplit.Painscreek.AutoSplitter.dll" status="changed"/>
 			<file path="Components/LiveSplit.Painscreek.MemoryReader.dll" status="changed"/>
