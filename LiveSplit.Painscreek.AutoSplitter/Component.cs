@@ -88,7 +88,7 @@ namespace LiveSplit.Painscreek.AutoSplitter
         // Start the timer in the prologue
         case TimerPhase.NotRunning:
           if (!ComponentSettings.EnableTimerStart) break;
-          if (gameState.Value.IsTutorialOn && previousGameState.HasValue && previousGameState.Value.IsStartMenu) TimerControl.Start();
+          if (gameState.Value.IsTutorialOn) TimerControl.Start();
           break;
         // Toggle pause and running on loading screens
         case TimerPhase.Running:
