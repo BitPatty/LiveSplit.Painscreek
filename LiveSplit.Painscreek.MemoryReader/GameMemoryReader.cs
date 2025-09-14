@@ -73,7 +73,7 @@ namespace LiveSplit.Painscreek.MemoryReader
     // LockTrigger:Update+390 - 83 38 00               - cmp dword ptr [rax],00 { 0 }
     // LockTrigger:Update+393 - 49 BB E872CF0500000000 - mov r11,0000000005CF72E8 { (-1718807576) }
     // LockTrigger:Update+39d - 41 FF D3               - call r11
-    private readonly string LockTriggerUpdateSignature = "41 FF D3 48 83 C4 20 48 8B 04 25 ?? ?? ?? ?? 0F B6 80 D0 00 00 00 85 C0 0F 84 AC 00 00 00 48 8B 04 25 ?? ?? ?? ?? 48 8B 40 30 48 8B 40 70 0F B6 40 24 85 C0";
+    private readonly string LockTriggerUpdateSignature = "41 FF D3 48 83 C4 20 48 8B 04 25 ?? ?? ?? ?? 0F B6 80 D0 00 00 00 85 C0 0F 84 AC 00 00 00 48 8B 04 25 ?? ?? ?? ?? 48 8B 40 30 48 8B 40 70 0F B6 40 24 85 C0 0F 85 90 00 00 00 48 8B 04 25 ?? ?? ?? ?? 48 8B 40 30 48 8B 40 70 C6 40 24 01 48 8B 04 25 ?? ?? ?? ??";
 
     // 1C5DF2CF - 00 55 48                         - add [rbp+48],dl
     // Tutorial:Awake+2- 8B EC                    - mov ebp,esp
@@ -98,6 +98,27 @@ namespace LiveSplit.Painscreek.MemoryReader
     // Tutorial:Awake+53- C9                      - leave 
     // Tutorial:Awake+54- C3                      - ret 
     private readonly string TutorialAwakeSignature = "55 48 8B EC 56 48 83 EC 08 48 8B F1 48 83 EC 20 49 BB ?? ?? ?? ?? ?? ?? ?? ?? 41 FF D3 48 83 C4 20 48 63 96 C8 00 00 00 48 8B C8 48 83 EC 20 83 38 00 49 BB ?? ?? ?? ?? ?? ?? ?? ?? 41 FF D3 48 83 C4 20 48 89 46 28 B8 ?? ?? ?? ?? 48 89 30 48 8B 75 F8 C9 C3";
+
+    // Tutorial:Update+28cd - 41 FF D3              - call r11
+    // Tutorial:Update+28d0 - 48 83 C4 20           - add rsp,20 { 32 }
+    // Tutorial:Update+28d4 - 85 C0                 - test eax, eax
+    // Tutorial:Update+28d6 - 75 24                 - jne Tutorial:Update+28fc
+    // Tutorial:Update+28d8 - 48 8B 46 48           - mov rax,[rsi + 48]
+    // Tutorial:Update+28dc - 48 8B C8              - mov rcx, rax
+    // Tutorial:Update+28df - BA 01000000           - mov edx,00000001 { 1 }
+    // Tutorial: Update + 28e4 - 48 83 EC 20           - sub rsp,20 { 32 }
+    // Tutorial: Update + 28e8 - 83 38 00 - cmp dword ptr[rax],00 { 0 }
+    // Tutorial: Update + 28eb - 49 BB 30791E1E00000000 - mov r11,000000001E1E7930 { (2022099944) }
+    // Tutorial: Update + 28f5 - 41 FF D3              - call r11
+    // Tutorial:Update + 28f8 - 48 83 C4 20           - add rsp,20 { 32 }
+    // Tutorial: Update + 28fc - 48 8B 04 25 F0BB8B05  - mov rax,[058BBBF0] { (128) }
+    // Tutorial: Update + 2904 - 48 8B 80 90000000     - mov rax,[rax + 00000090]
+    // Tutorial:Update + 290b - 48 8B C8              - mov rcx, rax
+    // Tutorial:Update + 290e - 83 39 00 - cmp dword ptr[rcx],00 { 0 }
+    // Tutorial: Update + 2911 - 48 63 40 18 - movsxd  rax, dword ptr [rax+18]
+    // Tutorial: Update + 2915 - 48 63 8E CC000000 - movsxd  rcx, dword ptr [rsi+000000CC]
+    // Tutorial: Update + 291c - 3B C1                 - cmp eax, ecx
+    private readonly string TutorialUpdateSignature = "41 FF D3 48 83 C4 20 85 C0 75 24 48 8B 46 48 48 8B C8 BA 01 00 00 00 48 83 EC 20 83 38 00 49 BB ?? ?? ?? ?? 00 00 00 00 41 FF D3 48 83 C4 20 48 8B 04 25 ?? ?? ?? ?? 48 8B 80 90 00 00 00 48 8B C8 83 39 00 48 63 40 18 48 63 8E CC 00 00 00 3B C1";
 
     /// <summary>
     /// Mutex for process lookups to avoid concurrent signature scans
@@ -162,6 +183,9 @@ namespace LiveSplit.Painscreek.MemoryReader
       byte[] tutorialInstanceData = Cache.CurrentTutorialInstanceData;
       if (tutorialInstanceData == null) return null;
 
+      byte[] datasData = Cache.CurrentDatasInstanceData;
+      if (datasData == null) return null;
+
       byte? flashlightData = Cache.FlashlightData;
       if (!flashlightData.HasValue) return null;
 
@@ -182,10 +206,11 @@ namespace LiveSplit.Painscreek.MemoryReader
         IsFlashlightComponentDisabled = flashlightData == 0,
         IsTutorialOn = tutorialInstanceData[0xD2] == 1,
         IsSwitchable = playerControlInstanceData[0xF0] == 1,
+        IsNewGame = datasData[0x10D] == 1,
       };
 
 #if DEBUG
-      Debug.WriteLine(state.IsInSceneTransition);
+      //Debug.WriteLine(state.IsNewGame);
       //LogStructToDebug(state);
       //Debug.WriteLine(Cache.CurrentTutorialInstance.ToString("x"));
       //Debug.WriteLine(state.DoNotUse_LoadingActive);
@@ -201,17 +226,19 @@ namespace LiveSplit.Painscreek.MemoryReader
     /// <returns>The data or NULL if it could not be read</returns>
     private void UpdateDataCachesFromMemory(Process process)
     {
-      (byte[] PlayerControlData, byte[] TutorialData, byte FlashlightData)? gameData = TryLoadGameData(process);
+      (byte[] PlayerControlData, byte[] TutorialData, byte[] DatasData, byte FlashlightData)? gameData = TryLoadGameData(process);
 
       if (!gameData.HasValue)
       {
         Cache.CurrentPlayerControlInstanceData = null;
         Cache.CurrentTutorialInstanceData = null;
+        Cache.CurrentDatasInstanceData = null;
         return;
       }
 
       Cache.CurrentPlayerControlInstanceData = gameData.Value.PlayerControlData;
       Cache.CurrentTutorialInstanceData = gameData.Value.TutorialData;
+      Cache.CurrentDatasInstanceData = gameData.Value.DatasData;
       Cache.FlashlightData = gameData.Value.FlashlightData;
     }
 
@@ -220,7 +247,7 @@ namespace LiveSplit.Painscreek.MemoryReader
     /// </summary>
     /// <param name="process">The process</param>
     /// <returns>The game's data or NULL if it could not be loaded</returns>
-    private (byte[] PlayerControlData, byte[] TutorialData, byte FlashlightData)? TryLoadGameData(Process process)
+    private (byte[] PlayerControlData, byte[] TutorialData, byte[] DatasData, byte FlashlightData)? TryLoadGameData(Process process)
     {
       IntPtr? currentPlayerControlInstancePointer = TryFindCurrentPlayerControlInstancePointer(process);
       if (!currentPlayerControlInstancePointer.HasValue) return null;
@@ -228,16 +255,22 @@ namespace LiveSplit.Painscreek.MemoryReader
       IntPtr? currentTutorialInstancePointer = TryFindCurrentTutorialInstancePointer(process);
       if (!currentTutorialInstancePointer.HasValue) return null;
 
+      IntPtr? currentDatasInstancePointer = TryFindCurrentDatasInstancePointer(process);
+      if (!currentDatasInstancePointer.HasValue) return null;
+
       byte[] playerControlInstanceData = TryLoadPlayerControlData(process, currentPlayerControlInstancePointer.Value);
       if (playerControlInstanceData == null) return null;
 
       byte[] tutorialData = TryLoadTutorialData(process, currentTutorialInstancePointer.Value);
       if (tutorialData == null) return null;
 
+      byte[] datasData = TryLoadDatasData(process, currentDatasInstancePointer.Value);
+      if (datasData == null) return null;
+
       byte[] flashlightData = TryReadProcessBytes(process, currentPlayerControlInstancePointer.Value - 8, 1);
       if (flashlightData == null) return null;
 
-      return (PlayerControlData: playerControlInstanceData, TutorialData: tutorialData, FlashlightData: flashlightData[0]);
+      return (PlayerControlData: playerControlInstanceData, TutorialData: tutorialData, DatasData: datasData, FlashlightData: flashlightData[0]);
     }
 
     /// <summary>
@@ -249,6 +282,7 @@ namespace LiveSplit.Painscreek.MemoryReader
     {
       if (Cache.CurrentPlayerControlInstance != IntPtr.Zero) return Cache.CurrentPlayerControlInstance;
 
+      Debug.WriteLine("Locating player control instance");
       byte[] instancePointerBytes = TryFindFirstSignatureMatch(process, PlayerControlAwakeSignature, 0x4B, 4);
       if (instancePointerBytes == null)
       {
@@ -272,6 +306,7 @@ namespace LiveSplit.Painscreek.MemoryReader
     {
       if (Cache.CurrentTutorialInstance != IntPtr.Zero) return Cache.CurrentTutorialInstance;
 
+      Debug.WriteLine("Locating tutorial instance");
       byte[] instancePointerBytes = TryFindFirstSignatureMatch(process, LockTriggerUpdateSignature, 0xB, 4) ?? TryFindFirstSignatureMatch(process, TutorialAwakeSignature, 0x48, 4);
       if (instancePointerBytes == null)
       {
@@ -283,6 +318,33 @@ namespace LiveSplit.Painscreek.MemoryReader
       IntPtr instancePointer = IntPtr.Zero + BinaryUtils.ByteArrayToInt32LE(instancePointerBytes);
       Debug.WriteLine($"Found tutorial instance pointer at {instancePointer.ToString("x")}");
       Cache.CurrentTutorialInstance = instancePointer;
+      return instancePointer;
+    }
+
+    /// <summary>
+    /// Attempts to find the pointer to the currently active datas instance
+    /// 
+    /// </summary>
+    /// <param name="process">The process</param>
+    /// <returns>The pointer or NULL if it could not be read</returns>
+    private IntPtr? TryFindCurrentDatasInstancePointer(Process process)
+    {
+      if (Cache.CurrentDatasInstance != IntPtr.Zero) return Cache.CurrentDatasInstance;
+
+      Debug.WriteLine("Locating datas instance");
+      byte[] instancePointerBytes =
+        TryFindFirstSignatureMatch(process, TutorialUpdateSignature, 0x33, 4)
+        ?? TryFindFirstSignatureMatch(process, LockTriggerUpdateSignature, 0x52, 4);
+
+      if (instancePointerBytes == null)
+      {
+        Debug.WriteLine("Could not find signature match for LockTrigger:Update");
+        Cache.CurrentDatasInstance = IntPtr.Zero;
+        return null;
+      }
+
+      IntPtr instancePointer = IntPtr.Zero + BinaryUtils.ByteArrayToInt32LE(instancePointerBytes);
+      Cache.CurrentDatasInstance = instancePointer;
       return instancePointer;
     }
 
@@ -312,6 +374,21 @@ namespace LiveSplit.Painscreek.MemoryReader
       IntPtr? instancePointer = TryReadPointerAddress32(process, tutorialInstancePointer);
       if (!instancePointer.HasValue) return null;
       return TryReadProcessBytes(process, instancePointer.Value, 0xE5);
+    }
+
+
+    /// <summary>
+    /// Tries to load the data of a datas instance
+    /// </summary>
+    /// <param name="process">The process</param>
+    /// <param name="datasInstancePointer">The pointer to the datas instance</param>
+    /// <returns>The datas data or NULL if it could not be read</returns>
+    private byte[] TryLoadDatasData(Process process, IntPtr datasInstancePointer)
+    {
+      if (datasInstancePointer == IntPtr.Zero) return null;
+      IntPtr? instancePointer = TryReadPointerAddress32(process, datasInstancePointer);
+      if (!instancePointer.HasValue) return null;
+      return TryReadProcessBytes(process, instancePointer.Value, 0x144);
     }
 
 
@@ -364,24 +441,38 @@ namespace LiveSplit.Painscreek.MemoryReader
     /// <returns>The read bytes or NULL if they could not be read</returns>
     private byte[] TryFindFirstSignatureMatch(Process process, string signature, int offset, int length)
     {
+
+      IntPtr signatureLocation = TryLocateSignature(process, signature);
+      byte[] data = TryReadProcessBytes(process, signatureLocation + offset, length);
+      return data;
+    }
+
+
+    /// <summary>
+    /// Attempts to locate the start of the provided signature
+    /// </summary>
+    /// <param name="process">The process to find the signature in</param>
+    /// <param name="signature">The signature</param>
+    /// <returns>The pointer to the first byte of the signature</returns>
+    private IntPtr TryLocateSignature(Process process, string signature)
+    {
       try
       {
         foreach (var page in process.MemoryPages())
         {
           SignatureScanner scanner = new SignatureScanner(process, page.BaseAddress, (int)page.RegionSize);
-          SigScanTarget target = new SigScanTarget(offset, signature);
+          SigScanTarget target = new SigScanTarget(0, signature);
           IntPtr match = scanner.Scan(target);
           if (match == IntPtr.Zero) continue;
-          byte[] data = TryReadProcessBytes(process, match, length);
-          if (data != null) return data;
+          return match;
         }
 
-        return null;
+        return IntPtr.Zero;
       }
-      catch (Exception e)
+      catch (Exception)
       {
-        Debug.WriteLine($"Failed to read signature data for '{signature}' at {offset}: {e.Message}");
-        return null;
+        Debug.WriteLine($"Failed to locate signature for '{signature}'");
+        return IntPtr.Zero;
       }
     }
 

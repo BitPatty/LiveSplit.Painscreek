@@ -30,7 +30,7 @@ namespace LiveSplit.Painscreek.MemoryReader
         return null;
 
       }
-      catch (Win32Exception ex)
+      catch (Win32Exception)
       {
         CachedProcess?.Dispose();
         CachedProcess = null;

@@ -13,13 +13,20 @@ namespace LiveSplit.Painscreek.AutoSplitter
   public class Component : LogicComponent
   {
     public override string ComponentName => "Painscreek Autosplitter";
+
+    // The visual component for the user configuration
     public UserSettings ComponentSettings;
 
+    // The reader for the game's memory/state
     private readonly GameMemoryReader GameReader = new GameMemoryReader();
+    // The LiveSplit timer model for the game timer
     private readonly TimerModel TimerControl;
+    // The timer for re-reading the game memory
     private readonly Timer MemoryUpdateTimer;
 
+    // Whether an update was called by LiveSplit
     private bool WasUpdateCalled = false;
+    // The previously read game state
     private GameState? previousGameState = null;
 
     public Component(LiveSplitState state)
@@ -85,10 +92,15 @@ namespace LiveSplit.Painscreek.AutoSplitter
 
       switch (TimerControl.CurrentState.CurrentPhase)
       {
-        // Start the timer in the prologue
+        // Start the timer when selecting new game in the start menu, but with paused game timer
+        // On start IsStartMenu switches to false / IsNewGame to true
         case TimerPhase.NotRunning:
           if (!ComponentSettings.EnableTimerStart) break;
-          if (gameState.Value.IsTutorialOn) TimerControl.Start();
+          if (!previousGameState.HasValue) break;
+          if (!previousGameState.Value.IsStartMenu) break;
+          if (!gameState.Value.IsNewGame) break;
+          TimerControl.CurrentState.IsGameTimePaused = true;
+          TimerControl.Start();
           break;
         // Toggle pause and running on loading screens
         case TimerPhase.Running:
@@ -139,13 +151,9 @@ namespace LiveSplit.Painscreek.AutoSplitter
     {
       try
       {
-        Debug.WriteLine("Refreshing game state");
         var updatedState = GameReader.RefreshGameState();
-
         if (!updatedState.HasValue)
           Debug.WriteLine("Could not read game data");
-
-        Debug.WriteLine("Refresh completed");
       }
       catch { }
     }

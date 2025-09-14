@@ -1,4 +1,7 @@
-﻿// <Elements>
+﻿
+// Tutorial
+//
+// <Elements>
 //   <Element Offset="16" Vartype="4 Bytes" Bytesize="4" OffsetHex="00000010" Description="m_InstanceID" DisplayMethod="unsigned integer"/>
 //   <Element Offset="24" Vartype="Pointer" Bytesize="8" OffsetHex="00000018" Description="m_CachedPtr" DisplayMethod="unsigned integer"/>
 //   <Element Offset="32" Vartype="Pointer" Bytesize="8" OffsetHex="00000020" Description="player" DisplayMethod="unsigned integer"/>
@@ -38,7 +41,8 @@
 //   <Element Offset="228" Vartype="Byte" Bytesize="1" OffsetHex="000000E4" Description="lockNaviOn" DisplayMethod="unsigned integer"/>
 // </Elements>
 
-
+// PlayerControl
+//
 // <Elements>
 //   <Element Offset="16" Vartype="4 Bytes" Bytesize="4" OffsetHex="00000010" Description="m_InstanceID" DisplayMethod="unsigned integer"/>
 //   <Element Offset="24" Vartype="Pointer" Bytesize="8" OffsetHex="00000018" Description="m_CachedPtr" DisplayMethod="unsigned integer"/>
@@ -116,6 +120,60 @@
 // </Elements>
 
 
+// Datas
+//
+// <Elements>
+//   <Element Offset="320" Vartype="4 Bytes" Bytesize="4" OffsetHex="00000140" Description="hours" DisplayMethod="unsigned integer"/>
+//   <Element Offset="316" Vartype="4 Bytes" Bytesize="4" OffsetHex="0000013C" Description="minutes" DisplayMethod="unsigned integer"/>
+//   <Element Offset="312" Vartype="4 Bytes" Bytesize="4" OffsetHex="00000138" Description="seconds" DisplayMethod="unsigned integer"/>
+//   <Element Offset="309" Vartype="Byte" Bytesize="1" OffsetHex="00000135" Description="enemyData" DisplayMethod="unsigned integer"/>
+//   <Element Offset="308" Vartype="Byte" Bytesize="1" OffsetHex="00000134" Description="autosave" DisplayMethod="unsigned integer"/>
+//   <Element Offset="307" Vartype="Byte" Bytesize="1" OffsetHex="00000133" Description="loadUnloadON" DisplayMethod="unsigned integer"/>
+//   <Element Offset="306" Vartype="Byte" Bytesize="1" OffsetHex="00000132" Description="hospitalData" DisplayMethod="unsigned integer"/>
+//   <Element Offset="305" Vartype="Byte" Bytesize="1" OffsetHex="00000131" Description="mansionData" DisplayMethod="unsigned integer"/>
+//   <Element Offset="304" Vartype="Byte" Bytesize="1" OffsetHex="00000130" Description="matthewConfession" DisplayMethod="unsigned integer"/>
+//   <Element Offset="288" Vartype="Pointer" Bytesize="8" OffsetHex="00000120" Description="playerRota" DisplayMethod="unsigned integer"/>
+//   <Element Offset="276" Vartype="Pointer" Bytesize="8" OffsetHex="00000114" Description="playerPosi" DisplayMethod="unsigned integer"/>
+//   <Element Offset="272" Vartype="Float" Bytesize="4" OffsetHex="00000110" Description="clockkHandValue" DisplayMethod="unsigned integer"/>
+//   <Element Offset="270" Vartype="Byte" Bytesize="1" OffsetHex="0000010E" Description="flashlightOn" DisplayMethod="unsigned integer"/>
+//   <Element Offset="269" Vartype="Byte" Bytesize="1" OffsetHex="0000010D" Description="playFromStart" DisplayMethod="unsigned integer"/>
+//   <Element Offset="268" Vartype="Byte" Bytesize="1" OffsetHex="0000010C" Description="gameOn" DisplayMethod="unsigned integer"/>
+//   <Element Offset="264" Vartype="Float" Bytesize="4" OffsetHex="00000108" Description="playTimeData" DisplayMethod="unsigned integer"/>
+//   <Element Offset="260" Vartype="Float" Bytesize="4" OffsetHex="00000104" Description="currentplaytime" DisplayMethod="unsigned integer"/>
+//   <Element Offset="256" Vartype="Byte" Bytesize="1" OffsetHex="00000100" Description="developer" DisplayMethod="unsigned integer"/>
+//   <Element Offset="248" Vartype="Pointer" Bytesize="8" OffsetHex="000000F8" Description="photoPath" DisplayMethod="unsigned integer"/>
+//   <Element Offset="240" Vartype="Pointer" Bytesize="8" OffsetHex="000000F0" Description="SaveLocation" DisplayMethod="unsigned integer"/>
+//   <Element Offset="232" Vartype="Pointer" Bytesize="8" OffsetHex="000000E8" Description="LoadUnloadList" DisplayMethod="unsigned integer"/>
+//   <Element Offset="224" Vartype="Pointer" Bytesize="8" OffsetHex="000000E0" Description="HospitalRoom" DisplayMethod="unsigned integer"/>
+//   <Element Offset="216" Vartype="Pointer" Bytesize="8" OffsetHex="000000D8" Description="MansionRoom" DisplayMethod="unsigned integer"/>
+//   <Element Offset="208" Vartype="Pointer" Bytesize="8" OffsetHex="000000D0" Description="takenphoto" DisplayMethod="unsigned integer"/>
+//   <Element Offset="200" Vartype="Pointer" Bytesize="8" OffsetHex="000000C8" Description="player" DisplayMethod="unsigned integer"/>
+//   <Element Offset="192" Vartype="Pointer" Bytesize="8" OffsetHex="000000C0" Description="endingAchievement" DisplayMethod="unsigned integer"/>
+//   <Element Offset="184" Vartype="Pointer" Bytesize="8" OffsetHex="000000B8" Description="sofiaEvent" DisplayMethod="unsigned integer"/>
+//   <Element Offset="176" Vartype="Pointer" Bytesize="8" OffsetHex="000000B0" Description="sofiaEventCondition" DisplayMethod="unsigned integer"/>
+//   <Element Offset="168" Vartype="Pointer" Bytesize="8" OffsetHex="000000A8" Description="events" DisplayMethod="unsigned integer"/>
+//   <Element Offset="160" Vartype="Pointer" Bytesize="8" OffsetHex="000000A0" Description="BookshelfPuzzlePushedBook" DisplayMethod="unsigned integer"/>
+//   <Element Offset="152" Vartype="Pointer" Bytesize="8" OffsetHex="00000098" Description="solvedPuzzle" DisplayMethod="unsigned integer"/>
+//   <Element Offset="144" Vartype="Pointer" Bytesize="8" OffsetHex="00000090" Description="tutorialCheck" DisplayMethod="unsigned integer"/>
+//   <Element Offset="136" Vartype="Pointer" Bytesize="8" OffsetHex="00000088" Description="mapID" DisplayMethod="unsigned integer"/>
+//   <Element Offset="128" Vartype="Pointer" Bytesize="8" OffsetHex="00000080" Description="photoName" DisplayMethod="unsigned integer"/>
+//   <Element Offset="120" Vartype="Pointer" Bytesize="8" OffsetHex="00000078" Description="specialItem" DisplayMethod="unsigned integer"/>
+//   <Element Offset="112" Vartype="Pointer" Bytesize="8" OffsetHex="00000070" Description="journalNoteID" DisplayMethod="unsigned integer"/>
+//   <Element Offset="104" Vartype="Pointer" Bytesize="8" OffsetHex="00000068" Description="inventoryItemID" DisplayMethod="unsigned integer"/>
+//   <Element Offset="96" Vartype="Pointer" Bytesize="8" OffsetHex="00000060" Description="pickedupItemID" DisplayMethod="unsigned integer"/>
+//   <Element Offset="88" Vartype="Pointer" Bytesize="8" OffsetHex="00000058" Description="offLights" DisplayMethod="unsigned integer"/>
+//   <Element Offset="80" Vartype="Pointer" Bytesize="8" OffsetHex="00000050" Description="onLights" DisplayMethod="unsigned integer"/>
+//   <Element Offset="72" Vartype="Pointer" Bytesize="8" OffsetHex="00000048" Description="unlockOne" DisplayMethod="unsigned integer"/>
+//   <Element Offset="64" Vartype="Pointer" Bytesize="8" OffsetHex="00000040" Description="closedOne" DisplayMethod="unsigned integer"/>
+//   <Element Offset="56" Vartype="Pointer" Bytesize="8" OffsetHex="00000038" Description="openedOne" DisplayMethod="unsigned integer"/>
+//   <Element Offset="48" Vartype="Pointer" Bytesize="8" OffsetHex="00000030" Description="lastLevelName" DisplayMethod="unsigned integer"/>
+//   <Element Offset="40" Vartype="Pointer" Bytesize="8" OffsetHex="00000028" Description="playTimeText" DisplayMethod="unsigned integer"/>
+//   <Element Offset="32" Vartype="Pointer" Bytesize="8" OffsetHex="00000020" Description="playTimeNumberText" DisplayMethod="unsigned integer"/>
+//   <Element Offset="24" Vartype="Pointer" Bytesize="8" OffsetHex="00000018" Description="m_CachedPtr" DisplayMethod="unsigned integer"/>
+//   <Element Offset="16" Vartype="4 Bytes" Bytesize="4" OffsetHex="00000010" Description="m_InstanceID" DisplayMethod="unsigned integer"/>
+// </Elements>
+
+
 namespace LiveSplit.Painscreek.MemoryReader
 {
   public struct GameState
@@ -152,5 +210,7 @@ namespace LiveSplit.Painscreek.MemoryReader
     public bool IsFlashlightComponentDisabled;
     public bool IsTutorialOn;
     public bool IsSwitchable;
+    // Set when starting a new gme
+    public bool IsNewGame;
   }
 }

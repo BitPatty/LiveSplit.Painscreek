@@ -15,6 +15,11 @@ namespace LiveSplit.Painscreek.MemoryReader
     public IntPtr CurrentTutorialInstance = IntPtr.Zero;
 
     /// <summary>
+    /// The pointer to the current datas instance
+    /// </summary>
+    public IntPtr CurrentDatasInstance = IntPtr.Zero;
+
+    /// <summary>
     /// The data of the current player control instance
     /// </summary>
     public byte[] CurrentPlayerControlInstanceData = null;
@@ -23,6 +28,11 @@ namespace LiveSplit.Painscreek.MemoryReader
     /// The data of the current tutorial instance
     /// </summary>
     public byte[] CurrentTutorialInstanceData = null;
+
+    /// <summary>
+    /// The data of the current datas instance
+    /// </summary>
+    public byte[] CurrentDatasInstanceData = null;
 
     /// <summary>
     /// The flashlight configuration
@@ -36,8 +46,10 @@ namespace LiveSplit.Painscreek.MemoryReader
     {
       CurrentPlayerControlInstance = IntPtr.Zero;
       CurrentTutorialInstance = IntPtr.Zero;
+      CurrentDatasInstance = IntPtr.Zero;
       CurrentPlayerControlInstanceData = null;
       CurrentTutorialInstanceData = null;
+      CurrentDatasInstanceData = null;
       FlashlightData = null;
     }
   }

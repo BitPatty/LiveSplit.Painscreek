@@ -1,4 +1,13 @@
 <updates>
+	<update version="0.6.0">
+		<files>
+			<file path="Components/LiveSplit.Painscreek.AutoSplitter.dll" status="changed"/>
+			<file path="Components/LiveSplit.Painscreek.MemoryReader.dll" status="changed"/>
+		</files>
+		<changelog>
+			<change>Version 0.6.0 - Fixed the timer starting too late and LiveSplit being blocked on startup.</change>
+		</changelog>
+	</update>
 	<update version="0.5.3">
 		<files>
 			<file path="Components/LiveSplit.Painscreek.AutoSplitter.dll" status="changed"/>
