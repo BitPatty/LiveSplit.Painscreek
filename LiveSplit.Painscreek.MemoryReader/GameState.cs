@@ -151,5 +151,6 @@ namespace LiveSplit.Painscreek.MemoryReader
     public int OpenWindowID;
     public bool IsFlashlightComponentDisabled;
     public bool IsTutorialOn;
+    public bool IsSwitchable;
   }
 }

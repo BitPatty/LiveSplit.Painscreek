@@ -104,6 +104,16 @@ namespace LiveSplit.Painscreek.MemoryReader
     /// </summary>
     private readonly Mutex RefreshMutex = new Mutex();
 
+
+    /// <summary>
+    /// Loads the last read game state from cache
+    /// </summary>
+    /// <returns>The game state or NULL if it is not available</returns>
+    public GameState? GetLastState()
+    {
+      return ParseGameStateFromDataCache();
+    }
+
     /// <summary>
     /// Refreshes the game's data
     /// </summary>
@@ -170,10 +180,12 @@ namespace LiveSplit.Painscreek.MemoryReader
         OpenWindowID = BinaryUtils.ByteArrayToInt32BE(playerControlInstanceData, 0xEC),
         IsInteracting = playerControlInstanceData[0xF9] == 1,
         IsFlashlightComponentDisabled = flashlightData == 0,
-        IsTutorialOn = tutorialInstanceData[0xD2] == 1
+        IsTutorialOn = tutorialInstanceData[0xD2] == 1,
+        IsSwitchable = playerControlInstanceData[0xF0] == 1,
       };
 
 #if DEBUG
+      Debug.WriteLine(state.IsInSceneTransition);
       //LogStructToDebug(state);
       //Debug.WriteLine(Cache.CurrentTutorialInstance.ToString("x"));
       //Debug.WriteLine(state.DoNotUse_LoadingActive);

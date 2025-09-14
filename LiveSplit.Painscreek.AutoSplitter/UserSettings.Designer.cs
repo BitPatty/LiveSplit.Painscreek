@@ -33,7 +33,6 @@
             this.Checkbox_EnableLoadRemoval = new System.Windows.Forms.CheckBox();
             this.Checkbox_EnableTimerStart = new System.Windows.Forms.CheckBox();
             this.Checkbox_EnableFinalSplit = new System.Windows.Forms.CheckBox();
-            this.lblDisclaimer = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -45,16 +44,15 @@
             // 
             this.settingsPanel.ColumnCount = 1;
             this.settingsPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.settingsPanel.Controls.Add(this.tableLayoutPanel1, 0, 1);
-            this.settingsPanel.Controls.Add(this.lblDisclaimer, 0, 0);
+            this.settingsPanel.Controls.Add(this.tableLayoutPanel1, 0, 0);
             this.settingsPanel.Location = new System.Drawing.Point(3, 20);
             this.settingsPanel.Name = "settingsPanel";
-            this.settingsPanel.RowCount = 4;
+            this.settingsPanel.RowCount = 1;
             this.settingsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.settingsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.settingsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.settingsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.settingsPanel.Size = new System.Drawing.Size(470, 398);
+            this.settingsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.settingsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.settingsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.settingsPanel.Size = new System.Drawing.Size(470, 96);
             this.settingsPanel.TabIndex = 1;
             // 
             // tableLayoutPanel1
@@ -69,7 +67,7 @@
             this.tableLayoutPanel1.Controls.Add(this.label1, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.label2, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.label3, 1, 2);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 103);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 4;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
@@ -112,20 +110,6 @@
             this.Checkbox_EnableFinalSplit.Text = "Enable Final Split";
             this.Checkbox_EnableFinalSplit.UseVisualStyleBackColor = true;
             // 
-            // lblDisclaimer
-            // 
-            this.lblDisclaimer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblDisclaimer.AutoSize = true;
-            this.lblDisclaimer.ForeColor = System.Drawing.Color.Red;
-            this.lblDisclaimer.Location = new System.Drawing.Point(3, 0);
-            this.lblDisclaimer.Name = "lblDisclaimer";
-            this.lblDisclaimer.Size = new System.Drawing.Size(464, 100);
-            this.lblDisclaimer.TabIndex = 1;
-            this.lblDisclaimer.Text = "Attention: This component is still under development!";
-            this.lblDisclaimer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // label1
             // 
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Left;
@@ -165,9 +149,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.settingsPanel);
             this.Name = "UserSettings";
-            this.Size = new System.Drawing.Size(476, 438);
+            this.Size = new System.Drawing.Size(476, 154);
             this.settingsPanel.ResumeLayout(false);
-            this.settingsPanel.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
@@ -179,7 +162,6 @@
         private System.Windows.Forms.TableLayoutPanel settingsPanel;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.CheckBox Checkbox_EnableLoadRemoval;
-        private System.Windows.Forms.Label lblDisclaimer;
     private System.Windows.Forms.CheckBox Checkbox_EnableTimerStart;
     private System.Windows.Forms.CheckBox Checkbox_EnableFinalSplit;
     private System.Windows.Forms.Label label1;
