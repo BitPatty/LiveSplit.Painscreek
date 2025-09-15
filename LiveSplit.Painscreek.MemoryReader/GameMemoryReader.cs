@@ -99,25 +99,25 @@ namespace LiveSplit.Painscreek.MemoryReader
     // Tutorial:Awake+54 - C3                      - ret 
     private readonly string TutorialAwakeSignature = "55 48 8B EC 56 48 83 EC 08 48 8B F1 48 83 EC 20 49 BB ?? ?? ?? ?? ?? ?? ?? ?? 41 FF D3 48 83 C4 20 48 63 96 C8 00 00 00 48 8B C8 48 83 EC 20 83 38 00 49 BB ?? ?? ?? ?? ?? ?? ?? ?? 41 FF D3 48 83 C4 20 48 89 46 28 B8 ?? ?? ?? ?? 48 89 30 48 8B 75 F8 C9 C3";
 
-    // Tutorial:Update+28cd    - 41 FF D3                - call r11
-    // Tutorial:Update+28d0    - 48 83 C4 20             - add rsp,20 { 32 }
-    // Tutorial:Update+28d4    - 85 C0                   - test eax, eax
-    // Tutorial:Update+28d6    - 75 24                   - jne Tutorial:Update+28fc
-    // Tutorial:Update+28d8    - 48 8B 46 48             - mov rax,[rsi + 48]
-    // Tutorial:Update+28dc    - 48 8B C8                - mov rcx, rax
-    // Tutorial:Update+28df    - BA 01000000             - mov edx,00000001 { 1 }
-    // Tutorial: Update + 28e4 - 48 83 EC 20             - sub rsp,20 { 32 }
-    // Tutorial: Update + 28e8 - 83 38 00                - cmp dword ptr[rax],00 { 0 }
-    // Tutorial: Update + 28eb - 49 BB 30791E1E00000000  - mov r11,000000001E1E7930 { (2022099944) }
-    // Tutorial: Update + 28f5 - 41 FF D3                - call r11
-    // Tutorial:Update + 28f8  - 48 83 C4 20             - add rsp,20 { 32 }
-    // Tutorial: Update + 28fc - 48 8B 04 25 F0BB8B05    - mov rax,[058BBBF0] { (128) }
-    // Tutorial: Update + 2904 - 48 8B 80 90000000       - mov rax,[rax + 00000090]
-    // Tutorial:Update + 290b  - 48 8B C8                - mov rcx, rax
-    // Tutorial:Update + 290e  - 83 39 00                - cmp dword ptr[rcx],00 { 0 }
-    // Tutorial: Update + 2911 - 48 63 40 18             - movsxd  rax, dword ptr [rax+18]
-    // Tutorial: Update + 2915 - 48 63 8E CC000000       - movsxd  rcx, dword ptr [rsi+000000CC]
-    // Tutorial: Update + 291c - 3B C1                   - cmp eax, ecx
+    // Tutorial:Update+28cd - 41 FF D3                - call r11
+    // Tutorial:Update+28d0 - 48 83 C4 20             - add rsp,20 { 32 }
+    // Tutorial:Update+28d4 - 85 C0                   - test eax, eax
+    // Tutorial:Update+28d6 - 75 24                   - jne Tutorial:Update+28fc
+    // Tutorial:Update+28d8 - 48 8B 46 48             - mov rax,[rsi + 48]
+    // Tutorial:Update+28dc - 48 8B C8                - mov rcx, rax
+    // Tutorial:Update+28df - BA 01000000             - mov edx,00000001 { 1 }
+    // Tutorial:Update+28e4 - 48 83 EC 20             - sub rsp,20 { 32 }
+    // Tutorial:Update+28e8 - 83 38 00                - cmp dword ptr[rax],00 { 0 }
+    // Tutorial:Update+28eb - 49 BB 30791E1E00000000  - mov r11,000000001E1E7930 { (2022099944) }
+    // Tutorial:Update+28f5 - 41 FF D3                - call r11
+    // Tutorial:Update+28f8 - 48 83 C4 20             - add rsp,20 { 32 }
+    // Tutorial:Update+28fc - 48 8B 04 25 F0BB8B05    - mov rax,[058BBBF0] { (128) }
+    // Tutorial:Update+2904 - 48 8B 80 90000000       - mov rax,[rax + 00000090]
+    // Tutorial:Update+290b - 48 8B C8                - mov rcx, rax
+    // Tutorial:Update+290e - 83 39 00                - cmp dword ptr[rcx],00 { 0 }
+    // Tutorial:Update+2911 - 48 63 40 18             - movsxd  rax, dword ptr [rax+18]
+    // Tutorial:Update+2915 - 48 63 8E CC000000       - movsxd  rcx, dword ptr [rsi+000000CC]
+    // Tutorial:Update+291c - 3B C1                   - cmp eax, ecx
     private readonly string TutorialUpdateSignature = "41 FF D3 48 83 C4 20 85 C0 75 24 48 8B 46 48 48 8B C8 BA 01 00 00 00 48 83 EC 20 83 38 00 49 BB ?? ?? ?? ?? 00 00 00 00 41 FF D3 48 83 C4 20 48 8B 04 25 ?? ?? ?? ?? 48 8B 80 90 00 00 00 48 8B C8 83 39 00 48 63 40 18 48 63 8E CC 00 00 00 3B C1";
 
     /// <summary>
