@@ -125,7 +125,6 @@ namespace LiveSplit.Painscreek.MemoryReader
     /// </summary>
     private readonly Mutex RefreshMutex = new Mutex();
 
-
     /// <summary>
     /// Loads the last read game state from cache
     /// </summary>
@@ -208,13 +207,6 @@ namespace LiveSplit.Painscreek.MemoryReader
         IsSwitchable = playerControlInstanceData[0xF0] == 1,
         IsNewGame = datasData[0x10D] == 1,
       };
-
-#if DEBUG
-      //Debug.WriteLine(state.IsNewGame);
-      //LogStructToDebug(state);
-      //Debug.WriteLine(Cache.CurrentTutorialInstance.ToString("x"));
-      //Debug.WriteLine(state.DoNotUse_LoadingActive);
-#endif
 
       return state;
     }
@@ -484,17 +476,6 @@ namespace LiveSplit.Painscreek.MemoryReader
     {
       LastUsedProcessID = 0;
       Cache.Reset();
-    }
-
-    /// <summary>
-    /// Logs a struct to the debug channel
-    /// </summary>
-    /// <typeparam name="T">The struct type</typeparam>
-    /// <param name="obj">The struct</param>
-    private static void LogStructToDebug<T>(T obj) where T : struct
-    {
-      foreach (var field in typeof(T).GetFields())
-        Debug.WriteLine($"{field.Name}: {field.GetValue(obj)}");
     }
 
     /// <summary>
