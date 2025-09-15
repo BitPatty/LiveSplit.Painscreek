@@ -443,6 +443,7 @@ namespace LiveSplit.Painscreek.MemoryReader
     {
 
       IntPtr signatureLocation = TryLocateSignature(process, signature);
+      if (signatureLocation == IntPtr.Zero) return null;
       byte[] data = TryReadProcessBytes(process, signatureLocation + offset, length);
       return data;
     }
