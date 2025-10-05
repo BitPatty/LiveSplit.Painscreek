@@ -4,7 +4,7 @@
 > Time with load removal is not the official timing method
 
 
-A work in progress [LiveSplit](https://github.com/LiveSplit/LiveSplit) auto splitter and load removal component for 'The Painscreek Killings'.
+A [LiveSplit](https://github.com/LiveSplit/LiveSplit) auto splitter and load removal component for 'The Painscreek Killings'.
 
 ## Features
 
